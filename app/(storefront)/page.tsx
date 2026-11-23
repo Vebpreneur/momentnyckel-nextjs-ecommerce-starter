@@ -1,102 +1,51 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { HeroBanner } from "@/components/storefront/hero-banner"
-import { CategoryGrid } from "@/components/storefront/category-grid"
-import { DealsCountdown } from "@/components/storefront/deals-countdown"
-import { BrandStrip } from "@/components/storefront/brand-strip"
-import { UGCGrid } from "@/components/storefront/ugc-grid"
-import { ProductCard } from "@/components/storefront/product-card"
-import { RecentlyViewed } from "@/components/storefront/recently-viewed"
-import { products, categories } from "@/data/seed"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, CheckCircle2, Gauge, Wrench } from "lucide-react"
+import { MomentFinder } from "@/components/moment-finder"
+import { getCatalog } from "@/lib/adtraction"
 
-function SectionHeader({ title, action }: { title: string; action?: { label: string; href: string } }) {
-  return (
-    <div className="mb-6 flex items-end justify-between">
-      <h2 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">{title}</h2>
-      {action && (
-        <Link
-          href={action.href}
-          className="flex items-center gap-1 text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {action.label}
-          <ArrowRight className="size-3" />
-        </Link>
-      )}
+export const revalidate = 21600
+
+const useCases = [
+ ["Bil & hjulbyte","Hjul, service och underhåll"],
+ ["Cykel","Låga moment och känsliga komponenter"],
+ ["Motorcykel","Service och montering"],
+ ["Verkstad","För professionellt och återkommande arbete"],
+ ["Finmekanik","Precision för mindre detaljer"],
+ ["Tunga fordon","Verktyg för högre vridmoment"],
+ ["Industri","Specialiserad montering"],
+ ["Maskiner & lantbruk","Reparation och underhåll"],
+]
+export default async function HomePage() {
+ const products = await getCatalog()
+ return <div className="bg-[#f8f9fb] text-slate-950">
+  <section className="relative overflow-hidden bg-[#101827] text-white">
+   <div className="pointer-events-none absolute -right-32 -top-32 size-[500px] rounded-full bg-amber-500/10 blur-3xl"/>
+   <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-20 md:py-28 lg:grid-cols-5 lg:items-center">
+    <div className="lg:col-span-3">
+     <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold tracking-widest text-amber-300"><Gauge className="size-4"/> MOMENTNYCKELGUIDEN</span>
+     <h1 className="mt-6 text-5xl font-bold leading-[1.08] tracking-tight sm:text-6xl">Rätt momentnyckel.<span className="block text-amber-400">För rätt arbete.</span></h1>
+     <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Hitta momentnycklar för bil, cykel, motorcykel, verkstad och industri. Jämför användningsområden och prisklasser utan att leta bland hundratals irrelevanta verktyg.</p>
+     <div className="mt-9 flex flex-wrap gap-3"><Link href="/#produkter" className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-6 py-4 font-bold text-slate-950 hover:bg-amber-300">Hitta din momentnyckel <ArrowRight className="size-5"/></Link><Link href="/#guide" className="inline-flex items-center rounded-xl border border-white/30 px-6 py-4 font-semibold text-white hover:bg-white/10">Läs köpguiden</Link></div>
     </div>
-  )
-}
-
-export default function HomePage() {
-  const activeProducts = products.filter((p) => p.status === "active")
-  const dealProducts = activeProducts.filter((p) => p.salePrice).slice(0, 4)
-  const trendingProducts = activeProducts
-    .filter((p) => !p.salePrice)
-    .sort((a, b) => b.reviewCount - a.reviewCount)
-    .slice(0, 6)
-
-  return (
-    <div className="flex flex-col">
-      {/* Hero */}
-      <HeroBanner />
-
-      {/* Categories */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <SectionHeader title="Shop by Category" action={{ label: "View All", href: "/products" }} />
-        <CategoryGrid categories={categories} />
-      </section>
-
-      {/* Deals with Countdown */}
-      <section className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14 lg:px-8">
-        <SectionHeader title="Today's Deals" action={{ label: "View All", href: "/products" }} />
-        <DealsCountdown products={dealProducts} />
-      </section>
-
-      {/* Full-width editorial banner */}
-      <section className="relative h-[320px] overflow-hidden sm:h-[400px]">
-        <img
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&h=600&fit=crop&auto=format&q=80"
-          alt="Fashion editorial"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative flex h-full items-center justify-center text-center">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">Limited Time</p>
-            <h2 className="mt-3 font-heading text-3xl font-bold text-white tracking-tight sm:text-4xl md:text-5xl">
-              Up to 40% Off
-            </h2>
-            <p className="mt-2 text-sm text-white/60">Selected styles. While stocks last.</p>
-            <Button size="lg" className="mt-6 rounded-none bg-white text-black px-8 hover:bg-neutral-200" render={<Link href="/products" />}>
-              Shop the Sale
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Brand Strip */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <BrandStrip />
-      </section>
-
-      {/* Trending */}
-      <section className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14 lg:px-8">
-        <SectionHeader title="Trending Now" action={{ label: "View All", href: "/products" }} />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
-          {trendingProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
-
-      {/* UGC / Style Gallery */}
-      <section className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14 lg:px-8">
-        <SectionHeader title="#EmberStyle" />
-        <UGCGrid />
-      </section>
-
-      {/* Recently Viewed */}
-      <RecentlyViewed />
+    <div className="hidden rounded-3xl border border-white/10 bg-white/5 p-8 lg:col-span-2 lg:block">
+     <div className="flex size-20 items-center justify-center rounded-2xl bg-amber-400 text-slate-950"><Wrench className="size-11"/></div>
+     <h2 className="mt-8 text-2xl font-bold">Ett smartare verktygsval</h2>
+     <div className="mt-6 space-y-4 text-slate-300">{["Välj rätt användningsområde","Filtrera efter budget och modell","Se verkliga produkter","Gå direkt till återförsäljaren"].map(t=><div className="flex items-center gap-3" key={t}><CheckCircle2 className="size-5 shrink-0 text-amber-400"/>{t}</div>)}</div>
     </div>
-  )
+   </div>
+  </section>
+  <section className="mx-auto max-w-7xl px-5 py-16">
+   <div className="max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[.2em] text-amber-700">Alla användningsområden</p><h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">En momentnyckel för varje behov</h2><p className="mt-3 text-slate-600">Från hemmagaraget till verkstaden. Börja med att välja rätt område.</p></div>
+   <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">{useCases.map((item,i)=><Link href="/#produkter" key={item[0]} className="group rounded-2xl border border-slate-200 bg-white p-5 transition-shadow hover:border-amber-400 hover:shadow-lg"><span className="inline-flex size-10 items-center justify-center rounded-xl bg-amber-50 text-sm font-bold text-amber-800">{String(i+1).padStart(2,"0")}</span><h3 className="mt-5 font-bold">{item[0]}</h3><p className="mt-2 text-sm text-slate-500">{item[1]}</p><ArrowRight className="mt-5 size-4 text-amber-700"/></Link>)}</div>
+  </section>
+  <section className="mx-auto max-w-7xl px-5 pb-20"><MomentFinder products={products}/></section>
+  <section id="guide" className="scroll-mt-24 bg-white"><div className="mx-auto max-w-7xl px-5 py-16">
+   <p className="text-xs font-semibold uppercase tracking-[.2em] text-amber-700">Köpguide</p><h2 className="mt-3 text-3xl font-bold tracking-tight">Tre saker att tänka på</h2>
+   <div className="mt-8 grid gap-4 md:grid-cols-3">{[
+    ["Momentområde (Nm)","Momentnyckelns arbetsområde ska omfatta det åtdragningsmoment som gäller för komponenten."],
+    ["Fäste och storlek","Kontrollera verktygets fyrkantsfäste, hylsor och åtkomlighet. Vanliga storlekar är 1/4, 3/8 och 1/2 tum."],
+    ["Precision och användning","För känsliga komponenter är tillräcklig noggrannhet avgörande. Vid frekvent användning kan kalibrering vara viktig."]
+   ].map(item=><article className="rounded-2xl border border-slate-200 p-6" key={item[0]}><h3 className="font-bold">{item[0]}</h3><p className="mt-3 text-sm leading-relaxed text-slate-600">{item[1]}</p></article>)}</div>
+  </div></section>
+ </div>
 }
