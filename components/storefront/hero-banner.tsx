@@ -1,53 +1,14 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
-
-export function HeroBanner() {
-  return (
-    <section className="relative">
-      {/* Full-width hero image with overlay */}
-      <div className="relative h-[70vh] min-h-[480px] max-h-[720px] overflow-hidden bg-foreground">
-        <img
-          src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1600&h=900&fit=crop&auto=format&q=80"
-          alt="Verkstad och precisionsarbete"
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-
-        <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/60 sm:text-sm">MOMENTNYCKEL.SE · VERKTYGSGUIDE</p>
-            <h1 className="mt-4 font-heading text-5xl font-bold text-white leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-              Hitta rätt momentnyckel
-            </h1>
-            <p className="mt-5 max-w-sm text-sm text-white/60 leading-relaxed sm:text-base">
-              Jämför momentnycklar för bil, cykel, motorcykel och verkstad. Välj rätt momentområde och prisklass.
-            </p>
-            <div className="mt-8 flex gap-4">
-              <Button size="lg" className="rounded-none bg-white text-black px-8 hover:bg-neutral-200" render={<Link href="/products" />}>
-                Se produkter
-                <ArrowRight className="ml-2 size-4" />
-              </Button>
-              <Button size="lg" variant="ghost" className="rounded-none border border-white text-white px-8 hover:bg-white hover:text-black" render={<Link href="/#valjare" />}>
-                Produktväljaren
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Trust strip below hero */}
-      <div className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 overflow-x-auto px-4 py-3 text-xs text-muted-foreground sm:px-6 sm:text-sm lg:px-8">
-          <span className="shrink-0">Alla användningsområden</span>
-          <span className="hidden h-3 w-px bg-border sm:block" />
-          <span className="shrink-0">Jämför priser</span>
-          <span className="hidden h-3 w-px bg-border sm:block" />
-          <span className="shrink-0">Relevanta produktförslag</span>
-          <span className="hidden h-3 w-px bg-border sm:block" />
-          <span className="shrink-0">Länkar till återförsäljare</span>
-        </div>
-      </div>
-    </section>
-  )
-}
+import {ArrowRight,CheckCircle2,Layers,ShieldCheck} from "lucide-react"
+export function HeroBanner(){return <section className="mx-auto max-w-[1536px] px-3 pt-4 sm:px-5 sm:pt-6">
+ <div className="mn-hero relative flex min-h-[600px] items-center overflow-hidden rounded-2xl border border-white/10 shadow-xl sm:min-h-[670px] lg:min-h-[705px]">
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#09131f]/50 via-transparent to-[#09131f]/20"/>
+  <div className="relative z-10 w-full max-w-[760px] px-7 py-20 sm:px-12 sm:py-28 lg:px-20">
+   <div className="mb-7 flex items-center gap-4 text-xs font-semibold uppercase tracking-[.23em] text-slate-200 sm:text-sm"><span className="h-[2px] w-12 bg-amber-400"/> Momentnycklar & verktyg</div>
+   <h1 className="max-w-[680px] font-heading text-[clamp(2.6rem,4.8vw,4.9rem)] font-bold leading-[1.11] tracking-tight text-white">Hitta rätt momentnyckel <span className="block">för ditt behov</span></h1>
+   <p className="mt-7 max-w-[510px] text-base leading-relaxed text-slate-200 sm:text-xl">Jämför modeller, egenskaper och priser – och hitta momentnyckeln som passar dig.</p>
+   <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-100"><span className="flex items-center gap-2"><ShieldCheck className="size-5 text-amber-400"/> Rätt användningsområde</span><span className="flex items-center gap-2"><Layers className="size-5 text-amber-400"/> Flera modeller</span><span className="flex items-center gap-2"><CheckCircle2 className="size-5 text-amber-400"/> Jämför egenskaper</span></div>
+   <div className="mt-12 flex flex-wrap items-center gap-4"><Link href="/#valjare" className="mn-gold-bg inline-flex min-h-14 items-center gap-3 rounded-full px-8 text-base font-bold text-slate-950 shadow-lg transition hover:brightness-110">Utforska sortimentet <ArrowRight className="size-5"/></Link><Link href="/#guide" className="inline-flex min-h-14 items-center px-4 font-medium text-white hover:text-amber-300">Guider & tips</Link></div>
+  </div>
+ </div>
+ </section>}

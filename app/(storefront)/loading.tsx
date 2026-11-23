@@ -1,5 +1,1 @@
-import { HomeSkeleton } from "@/components/storefront/skeletons"
-
-export default function HomeLoading() {
-  return <HomeSkeleton />
-}
+export default function Loading(){return <div className="mx-auto max-w-[1536px] animate-pulse px-5 py-6"><div className="h-[520px] rounded-2xl bg-slate-200"/><div className="mt-6 h-40 rounded-2xl bg-slate-200"/><div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">{Array.from({length:8},(_,i)=><div key={i} className="h-80 rounded-xl bg-slate-200"/>)}</div></div>}

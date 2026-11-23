@@ -1,15 +1,15 @@
-import type { Metadata } from "next"
-import { MomentFinder } from "@/components/moment-finder"
-import { getCatalog } from "@/lib/adtraction"
-export const metadata:Metadata={title:"Alla momentnycklar"}
-export const revalidate=21600
-export default async function ProductsPage({searchParams}:{searchParams:Promise<{use?:string,q?:string}>}) {
- const {use,q}=await searchParams
+import type {Metadata} from "next"
+import Link from "next/link"
+import {CatalogStore} from "@/components/catalog-store"
+import {getCatalog} from "@/lib/adtraction"
+export const metadata:Metadata={title:"Alla momentnycklar – katalog & produktväljare"}
+export const dynamic="force-dynamic"
+export default async function ProductsPage({searchParams}:{searchParams:Promise<{use?:string,q?:string,type?:string,favorites?:string,compare?:string}>}){
+ const q=await searchParams
  const products=await getCatalog()
- return <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-  <nav className="mb-7 text-xs text-muted-foreground"><a href="/">Startsida</a> / Produkter</nav>
-  <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">Alla momentnycklar</h1>
-  <p className="mb-10 mt-3 text-sm text-muted-foreground">Jämför momentnycklar och välj ett alternativ som passar ditt användningsområde och din budget.</p>
-  <MomentFinder products={products} initialUsage={use} initialQuery={q}/>
+ return <div className="mx-auto max-w-[1536px] px-3 py-8 pb-20 sm:px-5">
+  <nav aria-label="Brödsmulor" className="mb-6 text-xs text-slate-500"><Link href="/" className="hover:underline">Startsida</Link> / Alla produkter</nav>
+  <div className="mb-7"><h1 className="font-heading text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Momentnycklar & tillbehör</h1><p className="mt-3 text-sm text-slate-600">Utforska produkter, hitta rätt arbetsområde och jämför egenskaper innan du väljer.</p></div>
+  <CatalogStore products={products} initialQuery={q.q||""} initialUsage={q.use||"alla"} initialType={q.type||"alla"} initialFavorites={q.favorites==="1"} initialCompare={q.compare==="1"}/>
  </div>
 }
