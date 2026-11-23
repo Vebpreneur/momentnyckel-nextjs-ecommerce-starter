@@ -53,13 +53,7 @@ export function StoreHeader() {
       {announcementVisible && (
         <div className="relative bg-foreground text-background text-center text-xs py-2.5 px-4">
           <span>
-            Free storefront by thefrontkit. Checkout, accounts and admin are in the{" "}
-            <a
-              href="https://thefrontkit.com/apps/ecommerce-kit?utm_source=github&utm_medium=storefront-lite&utm_campaign=announcement"
-              className="underline underline-offset-2 hover:opacity-80"
-            >
-              full kit
-            </a>
+            Hitta rätt momentnyckel – jämför produkter för bil, cykel och verkstad.
           </span>
           <button
             onClick={() => setAnnouncementVisible(false)}
@@ -97,119 +91,19 @@ export function StoreHeader() {
               className="flex shrink-0 items-center gap-2 font-heading font-bold"
             >
               <ShoppingBag className={cn("text-primary transition-all", scrolled ? "h-5 w-5" : "h-6 w-6")} />
-              <span className={cn("text-foreground transition-all tracking-tight", scrolled ? "text-base" : "text-lg")}>Ember</span>
+              <span className={cn("text-foreground transition-all tracking-tight", scrolled ? "text-base" : "text-lg")}>Momentnyckel.se</g/span>
             </Link>
 
             {/* Desktop navigation with mega menu */}
-            <nav className="hidden md:flex md:items-center md:gap-1" aria-label="Main navigation">
-              {storeNavItems.map((item) => {
-                const category = categories.find(
-                  (c) => item.href === `/categories/${c.slug}`
-                )
-                if (!category) {
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {item.title}
-                    </Link>
-                  )
-                }
-                return (
-                  <div
-                    key={item.href}
-                    className="relative"
-                    onMouseEnter={() => setHoveredCategory(category.slug)}
-                    onMouseLeave={() => setHoveredCategory(null)}
-                  >
-                    <Link
-                      href={item.href}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {item.title}
-                    </Link>
-                    {hoveredCategory === category.slug && (
-                      <div className="absolute left-0 top-full z-50 pt-2">
-                        <div className="w-64 rounded-xl border border-border bg-card p-4 shadow-lg">
-                          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                            {category.name}
-                          </p>
-                          <div className="flex flex-col gap-1">
-                            {category.subcategories.map((sub) => (
-                              <Link
-                                key={sub.slug}
-                                href={`/categories/${category.slug}?sub=${sub.slug}`}
-                                className="rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                                onClick={() => setHoveredCategory(null)}
-                              >
-                                {sub.name}
-                              </Link>
-                            ))}
-                          </div>
-                          <div className="mt-3 border-t border-border pt-3">
-                            <Link
-                              href={item.href}
-                              className="text-xs font-medium text-primary hover:underline"
-                              onClick={() => setHoveredCategory(null)}
-                            >
-                              View all {category.name}
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </nav>
+            <nav className="hidden md:flex md:items-center md:gap-1" aria-label="Huvudmeny"><Link href="/products" className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:text-primary">Alla produkter</Link><Link href="/#valjare" className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary">Produktväljare</Link><Link href="/#kategorier" className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary">Kategorier</Link><Link href="/#guide" className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary">Köpguide</Link></nav>
 
             {/* Search bar (desktop) */}
-            <div className="hidden flex-1 md:block md:max-w-sm lg:max-w-md">
-              <SearchBar products={products} />
-            </div>
+            <div className="hidden flex-1 md:block md:max-w-sm lg:max-w-md"><form action="/products" className="relative"><input name="q" placeholder="Sök bland momentnycklar..." className="w-full rounded-full border border-border bg-muted/40 px-5 py-2.5 text-sm outline-none focus:border-primary"/></form></div>
 
             <div className="flex-1 md:hidden" />
 
             {/* Action icons */}
-            <div className="flex items-center gap-0.5">
-              {/* Mobile search toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="touch-target md:hidden"
-                aria-label={searchOpen ? "Close search" : "Open search"}
-                onClick={() => setSearchOpen(!searchOpen)}
-              >
-                {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
-              </Button>
-
-                            <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="touch-target relative"
-                      aria-label={`Cart (${cartCount} items)`}
-                      onClick={() => setMiniCartOpen(true)}
-                    >
-                      <ShoppingCart className="h-5 w-5" />
-                      {cartCount > 0 && (
-                        <Badge className="absolute -top-1 -right-1 flex size-[18px] items-center justify-center rounded-full p-0 text-[10px]">
-                          {cartCount}
-                        </Badge>
-                      )}
-                    </Button>
-                  }
-                />
-                <TooltipContent>Cart</TooltipContent>
-              </Tooltip>
-
-              
-
-              <CurrencySelector />
+            <div className="flex items-center gap-0.5"><Link href="/products" className="rounded-full p-2 hover:bg-muted" aria-label="Sök produkter"><Search className="h-5 w-5"/></Link>
               <ThemeToggle />
             </div>
           </div>
@@ -217,7 +111,7 @@ export function StoreHeader() {
           {/* Mobile search bar */}
           {searchOpen && (
             <div className="border-t border-border py-3 md:hidden">
-              <SearchBar products={products} />
+              <form action="/products"><input name="q" aria-label="Sök produkter" placeholder="Sök momentnyckel..." className="w-full rounded-lg border border-border bg-background px-4 py-2.5"/></form>
             </div>
           )}
         </div>
@@ -231,30 +125,11 @@ export function StoreHeader() {
                 Ember
               </SheetTitle>
             </SheetHeader>
-            <nav className="flex flex-col p-4" aria-label="Mobile navigation">
-              {storeNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.title}
-                </Link>
-              ))}
-              <div className="my-2 border-t border-border" />
-              <a
-                href="https://thefrontkit.com/apps/ecommerce-kit?utm_source=github&utm_medium=storefront-lite&utm_campaign=mobile-menu"
-                className="flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-muted"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Get the full kit (checkout, accounts, admin)
-              </a>
-            </nav>
+            <nav className="flex flex-col p-4" aria-label="Mobilmeny"><Link href="/products" className="p-3" onClick={()=>setMobileMenuOpen(false)}>Alla produkter</Link><Link href="/#valjare" className="p-3" onClick={()=>setMobileMenuOpen(false)}>Produktväljare</Link><Link href="/#kategorier" className="p-3" onClick={()=>setMobileMenuOpen(false)}>Kategorier</Link><Link href="/#guide" className="p-3" onClick={()=>setMobileMenuOpen(false)}>Köpguide</Link></nav>
           </SheetContent>
         </Sheet>
 
-        <MiniCartDrawer open={miniCartOpen} onOpenChange={setMiniCartOpen} />
+        
       </header>
     </>
   )
