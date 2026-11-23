@@ -1,11 +1,55 @@
 import type { Metadata } from "next"
+import { Bricolage_Grotesque, Figtree, JetBrains_Mono } from "next/font/google"
+import { ThemeProvider } from "next-themes"
+import { Toaster } from "@/components/ui/sonner"
+import { SkipLink } from "@/components/layout/skip-link"
 import "./globals.css"
-export const metadata:Metadata = {
- title: { default: "Momentnyckel.se – Hitta rätt momentnyckel", template: "%s | Momentnyckel.se" },
- description: "Hitta momentnycklar för bil, cykel, motorcykel, verkstad och industri. Filtrera efter användningsområde och pris och hitta rätt produkt.",
- metadataBase: new URL("https://momentnyckel.se"),
- openGraph: { title: "Momentnyckel.se – Hitta rätt momentnyckel", description: "Jämför momentnycklar efter behov, användningsområde och budget.", locale: "sv_SE", type:"website" },
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+})
+
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: "Momentnyckel.se – Hitta rätt momentnyckel",
+    template: "%s | Momentnyckel.se",
+  },
+  description:
+    "Hitta och jämför momentnycklar för bil, cykel, verkstad och industri. Produktväljare, produktkatalog och guider.",
 }
-export default function RootLayout({children}:{children:React.ReactNode}){
- return <html lang="sv"><body className="font-sans antialiased">{children}</body></html>
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="sv" suppressHydrationWarning>
+      <body
+        className={`${bricolage.variable} ${figtree.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SkipLink />
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
+  )
 }
