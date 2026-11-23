@@ -1,8 +1,2 @@
-import type { Metadata } from "next"
-import { ProductsPageClient } from "./products-client"
-
-export const metadata: Metadata = { title: "All Products" }
-
-export default function ProductsPage() {
-  return <ProductsPageClient />
-}
+import { redirect } from "next/navigation"
+export default function ProductsPage(){redirect("/#produkter")}
