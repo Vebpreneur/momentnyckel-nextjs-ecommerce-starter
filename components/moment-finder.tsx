@@ -3,6 +3,10 @@
 import { useMemo, useState } from "react"
 import type { CatalogProduct } from "@/lib/adtraction"
 import { ArrowUpRight, Search, SlidersHorizontal } from "lucide-react"
+import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { productSlug } from "@/lib/adtraction"
 
 const uses = [
   ["alla","Alla användningsområden"], ["bil","Bil & hjulbyte"],
@@ -10,10 +14,10 @@ const uses = [
   ["precision","Finmekanik"],["tung","Tunga fordon"],
   ["industri","Industri"],["maskin","Maskiner & lantbruk"],
 ]
-export function MomentFinder({ products }: { products: CatalogProduct[] }) {
-  const [usage,setUsage] = useState("alla")
+export function MomentFinder({ products,initialUsage,initialQuery }: { products: CatalogProduct[], initialUsage?:string, initialQuery?:string }) {
+  const [usage,setUsage] = useState(initialUsage && uses.some(x=>x[0]===initialUsage) ? initialUsage : "alla")
   const [budget,setBudget] = useState("alla")
-  const [query,setQuery] = useState("")
+  const [query,setQuery] = useState(initialQuery || "")
   const [sort,setSort] = useState("match")
   const [limit,setLimit] = useState(24)
   const results = useMemo(() => {
@@ -62,16 +66,14 @@ export function MomentFinder({ products }: { products: CatalogProduct[] }) {
     {products.length === 0 ? <div className="rounded-2xl border border-amber-200 bg-amber-50 p-10 text-center"><h3 className="text-lg font-semibold">Produktkatalogen förbereds</h3><p className="mt-2 text-sm text-slate-600">Vi visar inga exempelpriser eller påhittade produkter. Katalogen fylls med verkliga produkter när Adtraction-importen är ansluten.</p></div> :
      results.length === 0 ? <div className="rounded-2xl border bg-white p-10 text-center"><p className="font-semibold">Inga produkter matchar filtren.</p><button className="mt-3 text-sm font-semibold underline" onClick={()=>{setUsage("alla");setBudget("alla");setQuery("")}}>Visa alla produkter</button></div> :
      <><div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-       {results.slice(0,limit).map(p=><article key={p.id} className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-shadow hover:shadow-lg">
-         <div className="flex aspect-square items-center justify-center bg-slate-50 p-4">
+       {results.slice(0,limit).map(p=><Card key={p.id} className="group overflow-hidden rounded-none border-border bg-card py-0 transition-shadow hover:shadow-lg">
+         <Link href={`/products/${productSlug(p)}`} className="relative flex aspect-[3/4] items-center justify-center bg-muted p-4">
            {p.image ? <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-contain"/>:<span className="text-sm text-slate-400">Produktbild saknas</span>}
-         </div><div className="flex flex-1 flex-col p-4">
-           <p className="mb-2 text-xs text-slate-500">{p.brand || "Momentnyckel"}</p>
-           <h3 className="line-clamp-3 text-sm font-semibold leading-snug md:text-base">{p.name}</h3>
-           <div className="mt-auto pt-4"><p className="mb-3 text-lg font-bold">{p.price === null ? "Se pris hos butiken" : new Intl.NumberFormat("sv-SE",{style:"currency",currency:p.currency}).format(p.price)}</p>
-           <a href={p.trackingUrl} rel="sponsored nofollow noopener noreferrer" target="_blank" className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-3 text-sm font-semibold text-white hover:bg-slate-700">Se hos butik <ArrowUpRight className="h-4 w-4"/></a></div>
-         </div>
-       </article>)}
+         </Link><CardContent className="flex flex-1 flex-col px-3 py-4">
+           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{p.brand || "Momentnyckel"}</p>
+           <Link href={`/products/${productSlug(p)}`} className="hover:text-primary"><h3 className="line-clamp-2 text-[13px] font-medium leading-snug text-foreground">{p.name}</h3></Link>
+           <div className="mt-auto pt-4"><p className="mb-3 text-base font-bold">{p.price === null ? "Se pris hos butiken" : new Intl.NumberFormat("sv-SE",{style:"currency",currency:p.currency}).format(p.price)}</p>
+           <a href={p.trackingUrl} rel="sponsored nofollow noopener noreferrer" target="_blank" className="flex items-center justify-center gap-2 rounded-md bg-foreground px-3 py-2.5 text-xs font-semibold text-background hover:opacity-80">Se hos butik <ArrowUpRight className="h-4 w-4"/></a></div></CardContent></Card>)}
      </div>{limit < results.length && <div className="mt-8 text-center"><button onClick={()=>setLimit(x=>x+48)} className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold">Visa fler produkter</button></div>}</>}
   </div>
 }
