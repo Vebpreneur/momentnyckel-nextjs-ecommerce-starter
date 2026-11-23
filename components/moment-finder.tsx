@@ -5,8 +5,7 @@ import type { CatalogProduct } from "@/lib/adtraction"
 import { ArrowUpRight, Search, SlidersHorizontal } from "lucide-react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { productSlug } from "@/lib/adtraction"
+import { productSlug } from "@/lib/product-slug"
 
 const uses = [
   ["alla","Alla användningsområden"], ["bil","Bil & hjulbyte"],
